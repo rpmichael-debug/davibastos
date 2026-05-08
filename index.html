@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano FlexLife — Davi Bastos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a7a52;
+    --green-light: #23a06b;
+    --green-pale: #e8f7f1;
+    --gold: #c9a84c;
+    --gold-light: #f0d98a;
+    --dark: #0d1f17;
+    --charcoal: #1e3028;
+    --text: #f4f1ea;
+    --text-muted: #9ab5a6;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 20%, rgba(26,122,82,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 90% 80%, rgba(201,168,76,0.10) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 64px 0 40px;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(26,122,82,0.2);
+    border: 1px solid rgba(26,122,82,0.4);
+    color: #6fcfa0;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #f4f1ea 30%, var(--gold-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 500px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+
+  .hero-premium {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--green);
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .hero-premium span {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  /* TOP STATS GRID */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 48px 0 32px;
+  }
+
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(26,122,82,0.4);
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green), var(--gold));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .stat-card:hover::before { opacity: 1; }
+
+  .stat-icon {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .stat-value.gold { color: var(--gold-light); }
+  .stat-value.green { color: #6fcfa0; }
+
+  .stat-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* RENDA SECTION */
+  .renda-section {
+    background: linear-gradient(135deg, rgba(26,122,82,0.15), rgba(201,168,76,0.08));
+    border: 1px solid rgba(26,122,82,0.25);
+    border-radius: 24px;
+    padding: 40px;
+    margin: 32px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .renda-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .renda-left p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .renda-numbers {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .renda-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .renda-item-label {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .renda-item-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #6fcfa0;
+  }
+
+  /* SLIDER SECTION */
+  .slider-section {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    padding: 40px;
+    margin: 32px 0;
+  }
+
+  .slider-header {
+    margin-bottom: 32px;
+  }
+
+  .slider-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+
+  .slider-header p {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .slider-control {
+    margin-bottom: 32px;
+  }
+
+  .slider-control label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .slider-control label strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--gold-light);
+  }
+
+  input[type="range"] {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    outline: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--green-light);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(35,160,107,0.2);
+  }
+
+  .slider-results {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .slider-result-card {
+    background: rgba(26,122,82,0.1);
+    border: 1px solid rgba(26,122,82,0.2);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .slider-result-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .slider-result-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #6fcfa0;
+  }
+
+  /* CASH VALUE TABLE */
+  .cv-section {
+    margin: 32px 0;
+  }
+
+  .cv-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+
+  .cv-section p {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-bottom: 24px;
+  }
+
+  .cv-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cv-bar-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 110px;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .cv-bar-age {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: right;
+  }
+
+  .cv-bar-track {
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px;
+    height: 10px;
+    overflow: hidden;
+  }
+
+  .cv-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--green), var(--green-light));
+    transition: width 0.8s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .cv-bar-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #6fcfa0;
+    text-align: right;
+  }
+
+  /* LIVING BENEFITS */
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 32px 0;
+  }
+
+  .benefit-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 22px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+
+  .benefit-card:hover {
+    border-color: rgba(201,168,76,0.3);
+    transform: translateY(-2px);
+  }
+
+  .benefit-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+  }
+
+  .benefit-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .benefit-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* CTA */
+  .cta {
+    text-align: center;
+    padding: 56px 0 64px;
+  }
+
+  .cta h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  .cta p {
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    font-size: 0.9rem;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--green), var(--green-light));
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 16px 36px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .cta-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    margin: 16px 0;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 24px 0 40px;
+    font-size: 11px;
+    color: rgba(154,181,166,0.5);
+    line-height: 1.7;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up {
+    animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .renda-section { grid-template-columns: 1fr; gap: 24px; }
+    .slider-results { grid-template-columns: 1fr; }
+    .benefits-grid { grid-template-columns: 1fr; }
+    .slider-section, .renda-section { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+  <section class="hero fade-up">
+    <div class="hero-badge">National Life Group · FlexLife IUL</div>
+    <h1>Proteção hoje.<br>Renda vitalícia amanhã.</h1>
+    <p class="hero-sub">Um plano construído para Davi da Silva Bastos — 19 anos, Maryland — começando com o investimento de uma assinatura de streaming.</p>
+    <div class="hero-premium">
+      <span>$100</span>
+      <span style="font-family:'DM Sans';font-size:0.9rem;opacity:0.8;">/ mês · prêmio inicial</span>
+    </div>
+  </section>
+
+  <!-- TOP STATS -->
+  <section>
+    <div class="section-label fade-up delay-1">Visão geral do plano</div>
+    <div class="stats-grid">
+      <div class="stat-card fade-up delay-1">
+        <span class="stat-icon">🛡️</span>
+        <div class="stat-label">Cobertura imediata</div>
+        <div class="stat-value">$200,000</div>
+        <div class="stat-note">Death benefit hoje</div>
+      </div>
+      <div class="stat-card fade-up delay-2">
+        <span class="stat-icon">💰</span>
+        <div class="stat-label">Renda mensal vitalícia</div>
+        <div class="stat-value gold">$1,609</div>
+        <div class="stat-note">A partir dos 67 anos</div>
+      </div>
+      <div class="stat-card fade-up delay-3">
+        <span class="stat-icon">📈</span>
+        <div class="stat-label">Cash value aos 65</div>
+        <div class="stat-value green">$254,618</div>
+        <div class="stat-note">Cenário atual (6.84%)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RENDA SECTION -->
+  <section class="fade-up delay-2">
+    <div class="section-label">Renda na aposentadoria · LIBR</div>
+    <div class="renda-section">
+      <div class="renda-left">
+        <h2>Renda garantida<br>pelo resto da vida</h2>
+        <p>A partir dos 67 anos, Davi para de pagar o prêmio e começa a receber uma renda mensal garantida vitalícia — isenta de imposto de renda.</p>
+        <p style="font-size:12px;color:var(--text-muted);">Total pago em prêmios: <strong style="color:var(--text)">$57,600</strong> ao longo de 48 anos.</p>
+      </div>
+      <div class="renda-numbers">
+        <div class="renda-item">
+          <span class="renda-item-label">Renda mensal</span>
+          <span class="renda-item-value">$1,609</span>
+        </div>
+        <div class="renda-item">
+          <span class="renda-item-label">Renda anual</span>
+          <span class="renda-item-value">$19,312</span>
+        </div>
+        <div class="renda-item">
+          <span class="renda-item-label">Renda acumulada aos 87</span>
+          <span class="renda-item-value">$405,551</span>
+        </div>
+        <div class="renda-item">
+          <span class="renda-item-label">Renda acumulada aos 120</span>
+          <span class="renda-item-value">$1,042,848</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDER SIMULADOR -->
+  <section class="slider-section fade-up delay-2">
+    <div class="slider-header">
+      <div class="section-label">Simulador de crescimento</div>
+      <h2>E se aumentar o aporte?</h2>
+      <p>O FlexLife permite aumentar o prêmio mensal a qualquer momento — até o máximo não-MEC de $9,000/ano. Veja como o cash value cresce conforme você aumenta:</p>
+    </div>
+
+    <div class="slider-control">
+      <label>
+        <span>Prêmio mensal</span>
+        <strong id="slider-display">$100/mês</strong>
+      </label>
+      <input type="range" id="premium-slider" min="100" max="750" step="50" value="100">
+    </div>
+
+    <div class="slider-results">
+      <div class="slider-result-card">
+        <div class="slider-result-label">Cash Value aos 38</div>
+        <div class="slider-result-value" id="cv-38">$29,207</div>
+      </div>
+      <div class="slider-result-card">
+        <div class="slider-result-label">Cash Value aos 48</div>
+        <div class="slider-result-value" id="cv-48">$68,831</div>
+      </div>
+      <div class="slider-result-card">
+        <div class="slider-result-label">Cash Value aos 65</div>
+        <div class="slider-result-value" id="cv-65">$254,618</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASH VALUE TIMELINE -->
+  <section class="cv-section fade-up delay-3">
+    <div class="section-label">Acumulação de patrimônio</div>
+    <h2>Cash value ao longo dos anos</h2>
+    <p>Projeção com prêmio de $100/mês — cenário atual (6.84%). Valores acessíveis via empréstimo da apólice, isentos de imposto.</p>
+    <div class="cv-bars" id="cv-bars">
+      <!-- filled by JS -->
+    </div>
+  </section>
+
+  <!-- LIVING BENEFITS -->
+  <section class="fade-up delay-3">
+    <div class="section-label">Living benefits · Proteção em vida</div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:8px;">Benefícios em caso de doença</h2>
+    <p style="color:var(--text-muted);font-size:0.875rem;margin-bottom:0;">Projeção aos 65 anos, caso Davi precise acionar os benefícios acelerados.</p>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-name">Doença Terminal</div>
+        <div class="benefit-value">$264,721</div>
+        <div class="benefit-desc">Pagamento único se diagnosticado com doença terminal com expectativa de vida de até 24 meses.</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-name">Doença Crônica</div>
+        <div class="benefit-value">$5,336/mês</div>
+        <div class="benefit-desc">Renda mensal caso não consiga realizar 2 de 6 atividades básicas do dia a dia.</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-name">Doença Crítica</div>
+        <div class="benefit-value">até $271,674</div>
+        <div class="benefit-desc">Câncer, infarto, AVC, transplante de órgãos e outras condições qualificadas.</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-name">Alzheimer</div>
+        <div class="benefit-value">$266,524</div>
+        <div class="benefit-desc">Proteção específica para diagnóstico de Alzheimer e demência qualificada.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CTA -->
+  <section class="cta fade-up delay-4">
+    <h2>Pronto para começar?</h2>
+    <p>Fale com Michael Alves dos Santos e dê o primeiro passo hoje.</p>
+    <a href="tel:+1" class="cta-btn">
+      📞 Falar com Michael
+    </a>
+  </section>
+
+  <div class="footer">
+    Esta ilustração é apenas informativa e não constitui contrato de seguro.<br>
+    Valores projetados não são garantidos e estão sujeitos a variações. Cenário atual assume taxa de 6.84% a.a.<br>
+    FlexLife · Life Insurance Company of the Southwest · National Life Group · Illustration ID: 64436
+  </div>
+
+</div>
+
+<script>
+  // Cash value data from illustration (current scenario)
+  const cvData = [
+    { age: 28, label: '10 anos', value: 8280 },
+    { age: 33, label: '15 anos', value: 17293 },
+    { age: 38, label: '20 anos', value: 29207 },
+    { age: 43, label: '25 anos', value: 45161 },
+    { age: 48, label: '30 anos', value: 68831 },
+    { age: 53, label: '35 anos', value: 102580 },
+    { age: 58, label: '40 anos', value: 150868 },
+    { age: 63, label: '45 anos', value: 219727 },
+    { age: 65, label: 'Aposentadoria', value: 254618 },
+  ];
+
+  const maxCV = Math.max(...cvData.map(d => d.value));
+
+  const barsContainer = document.getElementById('cv-bars');
+  cvData.forEach((d, i) => {
+    const pct = (d.value / maxCV * 100).toFixed(1);
+    const row = document.createElement('div');
+    row.className = 'cv-bar-row';
+    row.innerHTML = `
+      <div class="cv-bar-age">idade ${d.age}</div>
+      <div class="cv-bar-track">
+        <div class="cv-bar-fill" style="width:0%" data-width="${pct}%"></div>
+      </div>
+      <div class="cv-bar-value">$${d.value.toLocaleString()}</div>
+    `;
+    barsContainer.appendChild(row);
+  });
+
+  // Animate bars on load
+  setTimeout(() => {
+    document.querySelectorAll('.cv-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.width;
+    });
+  }, 400);
+
+  // Slider logic
+  // Ratios derived from illustration data (linear scale approximation)
+  const slider = document.getElementById('premium-slider');
+  const display = document.getElementById('slider-display');
+
+  function calcCV(base, multiplier) {
+    return Math.round(base * multiplier);
+  }
+
+  slider.addEventListener('input', () => {
+    const val = parseInt(slider.value);
+    const mult = val / 100;
+    display.textContent = `$${val}/mês`;
+
+    const cv38 = calcCV(29207, mult);
+    const cv48 = calcCV(68831, mult);
+    const cv65 = calcCV(254618, mult);
+
+    document.getElementById('cv-38').textContent = '$' + cv38.toLocaleString();
+    document.getElementById('cv-48').textContent = '$' + cv48.toLocaleString();
+    document.getElementById('cv-65').textContent = '$' + cv65.toLocaleString();
+  });
+
+  // Intersection Observer for bar animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.cv-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width;
+        });
+      }
+    });
+  }, { threshold: 0.2 });
+
+  observer.observe(barsContainer);
+</script>
+</body>
+</html>
